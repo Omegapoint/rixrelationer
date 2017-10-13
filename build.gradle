@@ -1,3 +1,5 @@
+apply plugin: 'idea'
+
 group 'omegapoint.se'
 version '1.0-SNAPSHOT'
 
