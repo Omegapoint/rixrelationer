@@ -13,6 +13,11 @@ public class Person {
 	private String valkrets;
 	private String status;
 
+	public String namn() {
+		return tilltalsnamn + " " + efternamn;
+	}
+
+
 	@JsonProperty("fodd_ar")
 	public Integer getFödelseÅr() {
 		return födelseÅr;

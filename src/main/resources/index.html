@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    body {
+        font: 10px sans-serif;
+    }
+
+    svg text{
+        fill:grey;
+        font-size:11px;
+    }
+    svg .values text{
+        pointer-events:none;
+        stroke-width: 0.5px;
+    }
+    .groups:hover{
+        cursor:pointer;
+        font-weight:bold;
+    }
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="http://vizjs.org/viz.v1.1.0.min.js"></script>
+<script>
+
+    var data = [["Ylva Johansson (S)","Désirée Pethrus (KD)","14"],
+        ["Anna Johansson (S)","Edward Riedl (M)","27"],
+        ["Anna Kinberg Batra (M)","Stefan Löfven (S)","18"],
+        ["Ylva Johansson (S)","Lotta Finstorp (M)","11"],
+        ["Jens Holm (V)","Sven-Erik Bucht (S)","18"],
+        ["Morgan Johansson (S)","Stig Henriksson (V)","12"],
+        ["Magdalena Andersson (S)","Fredrik Schulte (M)","16"],
+        ["Magdalena Andersson (S)","Larry Söder (KD)","16"],
+        ["Jan Björklund (L)","Stefan Löfven (S)","19"],
+        ["Jonas Sjöstedt (V)","Stefan Löfven (S)","14"],
+        ["Stefan Löfven (S)","Annie Lööf (C)","13"],
+        ["Stefan Löfven (S)","Jimmie Åkesson (SD)","14"],
+        ["Magdalena Andersson (S)","Cecilie Tenfjord-Toftby (M)","26"],
+        ["Jimmie Åkesson (SD)","Anna Kinberg Batra (M)","12"],
+        ["Annika Strandhäll (S)","Lotta Finstorp (M)","15"],
+        ["Gabriel Wikström (S)","Saila Quicklund (M)","11"],
+        ["Alice Bah Kuhnke (MP)","Olof Lavesson (M)","16"],
+        ["Ylva Johansson (S)","Christian Holm Barenfeld (M)","20"],
+        ["Sven-Erik Bucht (S)","Jens Holm (V)","21"],
+        ["Ylva Johansson (S)","Elisabeth Svantesson (M)","13"],
+        ["Fredrik Schulte (M)","Magdalena Andersson (S)","12"],
+        ["Ylva Johansson (S)","Erik Andersson (M)","25"],
+        ["Sven-Erik Bucht (S)","Magnus Oscarsson (KD)","14"],
+        ["Magdalena Andersson (S)","Maria Malmer Stenergard (M)","25"],
+        ["Magdalena Andersson (S)","Lotta Finstorp (M)","14"],
+        ["Morgan Johansson (S)","Mikael Eskilandersson (SD)","11"],
+        ["Åsa Regnér (S)","Erik Andersson (M)","11"],
+        ["Anders Ygeman (S)","Krister Hammarbergh (M)","15"],
+        ["Christian Holm Barenfeld (M)","Ylva Johansson (S)","16"],
+        ["Katarina Brännström (M)","Ylva Johansson (S)","15"],
+        ["Anders Åkesson (C)","Karin Svensson Smith (MP)","15"],
+        ["Helene Hellmark Knutsson (S)","Fredrik Christensson (C)","13"],
+        ["Sven-Erik Bucht (S)","Sten Bergheden (M)","11"],
+        ["Ylva Johansson (S)","Katarina Brännström (M)","23"],
+        ["Jens Holm (V)","Isabella Lövin (MP)","12"],
+        ["Anders Ygeman (S)","Beatrice Ask (M)","14"],
+        ["Margot Wallström (S)","Hans Linde (V)","11"],
+        ["Anders Ygeman (S)","Roger Haddad (L)","19"],
+        ["Ola Johansson (C)","Peter Eriksson (MP)","11"],
+        ["Annie Lööf (C)","Stefan Löfven (S)","19"],
+        ["Cecilie Tenfjord-Toftby (M)","Magdalena Andersson (S)","22"],
+        ["Annika Strandhäll (S)","Johan Forssell (M)","14"],
+        ["Stefan Löfven (S)","Anna Kinberg Batra (M)","18"],
+        ["Stefan Löfven (S)","Jan Björklund (L)","12"],
+        ["Ulla Andersson (V)","Jakob Forssmed (KD)","13"],
+        ["Magdalena Andersson (S)","Anette Åkesson (M)","11"],
+        ["Margot Wallström (S)","Karin Enström (M)","11"],
+        ["Hans Linde (V)","Margot Wallström (S)","13"],
+        ["Magdalena Andersson (S)","Ulf Kristersson (M)","12"],
+        ["Gabriel Wikström (S)","Karin Rågsjö (V)","11"],
+        ["Jakob Forssmed (KD)","Ulla Andersson (V)","13"],
+        ["Jimmie Åkesson (SD)","Stefan Löfven (S)","16"],
+        ["Peter Eriksson (MP)","Ola Johansson (C)","11"],
+        ["Hans Linde (V)","Isabella Lövin (MP)","12"],
+        ["Gustav Fridolin (MP)","Daniel Riazat (V)","11"],
+        ["Morgan Johansson (S)","Johan Forssell (M)","19"]];
+
+    colors = {
+        "Alice Bah Kuhnke (MP)": "#da4480",
+        "Anders Ygeman (S)": "#5ab449",
+        "Anders Åkesson (C)": "#7f5acd",
+        "Anna Johansson (S)": "#aab740",
+        "Anna Kinberg Batra (M)": "#ce58c0",
+        "Annie Lööf (C)": "#50a26e",
+        "Annika Strandhäll (S)": "#d1434b",
+        "Cecilie Tenfjord-Toftby (M)": "#45c0bc",
+        "Christian Holm Barenfeld (M)": "#ce5929",
+        "Fredrik Schulte (M)": "#4e7bda",
+        "Gabriel Wikström (S)": "#d49d3c",
+        "Gustav Fridolin (MP)": "#6660a3",
+        "Hans Linde (V)": "#7b853c",
+        "Helene Hellmark Knutsson (S)": "#b58dde",
+        "Jakob Forssmed (KD)": "#97622e",
+        "Jan Björklund (L)": "#609dd6",
+        "Jens Holm (V)": "#e29074",
+        "Jimmie Åkesson (SD)": "#9c4b88",
+        "Jonas Sjöstedt (V)": "#ab505f",
+        "Katarina Brännström (M)": "#dc85b6",
+        "Magdalena Andersson (S)": "#da4480",
+        "Margot Wallström (S)": "#5ab449",
+        "Morgan Johansson (S)": "#7f5acd",
+        "Ola Johansson (C)": "#aab740",
+        "Peter Eriksson (MP)": "#ce58c0",
+        "Stefan Löfven (S)": "#50a26e",
+        "Sven-Erik Bucht (S)": "#d1434b",
+        "Ulla Andersson (V)": "#45c0bc",
+        "Ylva Johansson (S)": "#ce5929",
+        "Åsa Regnér (S)": "#4e7bda"
+    };
+
+    function sort(a,b){ return d3.ascending(a[0],b[0]); }
+
+    var ch = viz.ch().data(data)
+        .padding(.01)
+        .sort(sort)
+        .innerRadius(430)
+        .outerRadius(450)
+        .duration(1000)
+        .chordOpacity(0.3)
+        .labelPadding(.1)
+        .fill(function(d){ return colors[d];});
+
+    var width=1200, height=1100;
+
+    var svg = d3.select("body").append("svg").attr("height",height).attr("width",width);
+
+    svg.append("g").attr("transform", "translate(600,550)").call(ch);
+
+    // adjust height of frame in bl.ocks.org
+    d3.select(self.frameElement).style("height", height+"px").style("width", width+"px");
+</script>

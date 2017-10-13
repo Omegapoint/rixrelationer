@@ -1,11 +1,10 @@
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,6 +13,16 @@ public class Anförande {
 	private String text;
 	private String parti;
 	private LocalDateTime datum;
+	private Path filnamn;
+
+
+	public String talare() {
+		if (talare != null) {
+			return talare.replaceAll("Statsrådet|[A-ZÅÄÖ][a-zåäö\\-\\s]*ministern|Riksdagsledamot|Ledamot|Ledamoten", "").trim();
+		}
+		System.out.println("Talare null i filen  " + filnamn);
+		return talare;
+	}
 
 
 	public String getTalare() {
@@ -50,5 +59,13 @@ public class Anförande {
 
 	public void setDatum(LocalDateTime datum) {
 		this.datum = datum;
+	}
+
+	public void setFilnamn(Path filnamn) {
+		this.filnamn = filnamn;
+	}
+
+	public Path getFilnamn() {
+		return filnamn;
 	}
 }
